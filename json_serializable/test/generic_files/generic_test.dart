@@ -42,15 +42,16 @@ void main() {
     });
     test('with bad arguments', () {
       expect(
-          () => GenericClass<double, String>()
-            ..fieldT = (true as dynamic) as double,
-          throwsCastError);
+        () => GenericClass<double, String>()
+          ..fieldT = (true as dynamic) as double,
+        throwsTypeError,
+      );
     });
     test('with bad arguments', () {
       expect(
-          () =>
-              GenericClass<double, String>()..fieldS = (5 as dynamic) as String,
-          throwsCastError);
+        () => GenericClass<double, String>()..fieldS = (5 as dynamic) as String,
+        throwsTypeError,
+      );
     });
   });
 
@@ -106,6 +107,56 @@ void main() {
   ],
   "someSet": [
    "2"
+  ]
+ },
+ "value3": {
+  "value": 3.14,
+  "list": [
+   3.14
+  ],
+  "someSet": [
+   "2"
+  ]
+ }
+}''';
+
+      final instance = ConcreteClass.fromJson(
+        jsonDecode(inputJson) as Map<String, dynamic>,
+      );
+
+      expect(loudEncode(instance), inputJson);
+    });
+
+    test('round trip decode/decode with null', () {
+      const inputJson = r'''
+{
+ "value": {
+  "value": 5,
+  "list": [
+   5
+  ],
+  "someSet": [
+   "string"
+  ]
+ },
+ "value2": {
+  "value": 3.14,
+  "list": [
+   3.14
+  ],
+  "someSet": [
+   "2"
+  ]
+ },
+ "value3": {
+  "value": null,
+  "list": [
+   3.14,
+   null
+  ],
+  "someSet": [
+   "2",
+   null
   ]
  }
 }''';
